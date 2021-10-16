@@ -15,7 +15,7 @@ To start up the blockchain, execute the `main.sh` file in this directory:
 main.sh
 ```
 
-Follow the prompts to choose how many miners to spin up and execute transactions.
+Follow the prompts on the command line interface.
 
 ## Architecture
 
@@ -36,6 +36,6 @@ Each miner has the following endpoints:
 
 Transactions are executed via the command-line interface (CLI) using prompts. Every time a new block is mined, the updated balances will appear in the terminal.
 
-### Blockchain
+### State
 
-Each miner maintains the state of the blockchain in its local state. The current blockchain can be logged via the CLI.
+Each miner maintains the state of the blockchain in its local state. It will also be displayed on the browser-based user interface.
