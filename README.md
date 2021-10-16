@@ -27,10 +27,10 @@ When a block is successfully mined, the miner messages its peers.
 
 Each miner has the following endpoints:
 
-- POST /transactions => accept a new transaction
-- POST /peers => add a peer
-- POST /data => add a new block
 - GET /data => fetch current state of blockchain
+- POST /data => add a new block
+- POST /peers => add a peer
+- POST /transactions => accept a new transaction
 
 ### Transactions
 
