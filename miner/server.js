@@ -26,9 +26,10 @@ const isSatoshi = !Boolean(argv.peers);
 setState({
   isSatoshi,
   address: isSatoshi ? 'satoshi' : port.toString(),
-  peers: argv.peers || [],
-  blockchain: new Blockchain(isSatoshi ? genesisBlock : null),
+  peers: argv.peers || []
 });
+
+setState({ blockchain: new Blockchain(isSatoshi ? genesisBlock : null) })
 
 console.log('state', state);
 
