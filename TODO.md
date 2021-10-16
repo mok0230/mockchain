@@ -1,6 +1,5 @@
 # TODO
 
-- First miner (defined as having no peers) mines genesis block
 - Other miners add peers using command line argument on instantiation
 - Then ping all peers to get longest blockchain
 - Then start mining

@@ -11,6 +11,10 @@ class Blockchain {
     }
   }
 
+  async getLongestBlockchain() {
+    // TODO: get longest blockchain
+  }
+
   mine() {
     console.log('Mining!')
     // TODO: implement mining

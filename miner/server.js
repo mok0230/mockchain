@@ -11,6 +11,7 @@ const { Blockchain } = require('./models/Blockchain');
 const argv = yargs(hideBin(process.argv)).argv;
 const app = express();
 app.use(express.json());
+const { state, setState } = require('./store');
 
 const port = argv.port;
 
@@ -20,24 +21,16 @@ if (!port) {
 
 console.log('Starting server')
 
-// the only node that has no peers is the first one
 const isSatoshi = !Boolean(argv.peers);
 
-console.log('argv.peers', argv.peers)
+setState({
+  isSatoshi,
+  address: isSatoshi ? 'satoshi' : port.toString(),
+  peers: argv.peers || [],
+  blockchain: new Blockchain(isSatoshi ? genesisBlock : null),
+});
 
-console.log('isSatoshi', isSatoshi)
-
-const address = isSatoshi ? 'satoshi' : port.toString();
-
-const peers = argv.peers || [];
-
-console.log('genesisBlock', genesisBlock)
-
-const blockchain = new Blockchain(isSatoshi ? genesisBlock : null);
-
-console.log('blockchain', blockchain);
-
-console.log('blockchain.blocks', blockchain.blocks);
+console.log('state', state);
 
 app.get('/data', (req, res) => {
   // TODO: return current blockchain
