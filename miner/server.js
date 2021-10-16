@@ -9,9 +9,12 @@ const { hideBin } = require('yargs/helpers');
 const { genesisBlock } = require('./utils');
 const { Blockchain } = require('./models/Blockchain');
 const argv = yargs(hideBin(process.argv)).argv;
+// const cors = require('cors');
 const app = express();
+// app.use(cors());
 app.use(express.json());
 const { state, setState } = require('./store');
+
 
 const port = argv.port;
 
@@ -22,11 +25,12 @@ if (!port) {
 console.log('Starting server')
 
 const isSatoshi = !Boolean(argv.peers);
+const peers = argv.peers ? Array.isArray(argv.peers) ? argv.peers : [argv.peers] : [];
 
 setState({
   isSatoshi,
   address: isSatoshi ? 'satoshi' : port.toString(),
-  peers: argv.peers || []
+  peers
 });
 
 setState({ blockchain: new Blockchain(isSatoshi ? genesisBlock : null) })
@@ -34,7 +38,9 @@ setState({ blockchain: new Blockchain(isSatoshi ? genesisBlock : null) })
 console.log('state', state);
 
 app.get('/data', (req, res) => {
-  // TODO: return current blockchain
+  console.log('GET /data');
+  console.log('returning', state.blockchain)
+  res.send(state.blockchain);
 });
 
 app.post('/data', (req, res) => {

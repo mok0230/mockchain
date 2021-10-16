@@ -1,4 +1,5 @@
-const { state } = require('../store')
+const { state } = require('../store');
+const { executePeerRequest } = require('../utils');
 
 class Blockchain {
   constructor(genesisBlock) {
@@ -11,6 +12,9 @@ class Blockchain {
     } else {
       console.log('getting longest blockchain')
       console.log('peers', state.peers);
+      executePeerRequest('getData')
+        .then(blockchains => console.log('blockchains', blockchains))
+      
       
       // TODO: ping peers to get longest blockchain
     }
@@ -23,6 +27,10 @@ class Blockchain {
   mine() {
     console.log('Mining!')
     // TODO: implement mining
+  }
+
+  toJson() {
+    return { blocks: this.blocks };
   }
 }
 

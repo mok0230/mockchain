@@ -12,6 +12,7 @@
   "dependencies": {
     "crypto-js": "^4.1.1",
     "express": "^4.17.1",
+    "node-fetch": "^2.6.5",
     "yargs": "^17.2.1"
   }
 }
