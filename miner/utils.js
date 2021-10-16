@@ -28,11 +28,42 @@ const executePeerRequest = async (type) => {
       const requests = state.peers.map(peer => fetch(`http://localhost:${peer}/data`).then(response => response.json()));
       return await Promise.all(requests);
   }
-  
+}
+
+const getLongestBlockchain = async () => {
+  console.log('getLongestBlockchain');
+  const allBlockchains = await executePeerRequest('getData');
+
+  console.log('allBlockchains', allBlockchains);
+  const validBlockchains = allBlockchains.filter(blockchainValidityFilter);
+
+  console.log('validBlockchains', validBlockchains);
+
+  let longestBlockchain = validBlockchains[0];
+
+  for (let i = 1; i < validBlockchains.length; i++) {
+    if (validBlockchains[i].block.length > longestBlockchain.blocks.length) {
+      longestBlockchain = validBlockchains[i];
+    }
+  }
+
+  console.log('longestBlockchain', longestBlockchain);
+
+  return longestBlockchain;
+}
+
+const blockchainValidityFilter = blockchain => {
+  // TODO: expand validation filter to include required properties and difficulty
+  for (let i = 1; i < blockchain.blocks.length; i++ ) {
+    if (blockchain.blocks[i].previousHash !== getBlockHash(blockchain.blocks[i - 1])) return false;
+  }
+
+  return true;
 }
 
 module.exports = {
   genesisBlock,
   getBlockHash,
-  executePeerRequest
+  executePeerRequest,
+  getLongestBlockchain
 }
