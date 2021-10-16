@@ -21,13 +21,21 @@ if (!port) {
 console.log('Starting server')
 
 // the only node that has no peers is the first one
-const isSatoshi = Boolean(argv.peers);
+const isSatoshi = !Boolean(argv.peers);
+
+console.log('argv.peers', argv.peers)
+
+console.log('isSatoshi', isSatoshi)
 
 const address = isSatoshi ? 'satoshi' : port.toString();
 
 const peers = argv.peers || [];
 
+console.log('genesisBlock', genesisBlock)
+
 const blockchain = new Blockchain(isSatoshi ? genesisBlock : null);
+
+console.log('blockchain', blockchain);
 
 console.log('blockchain.blocks', blockchain.blocks);
 

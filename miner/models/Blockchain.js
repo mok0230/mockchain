@@ -1,9 +1,12 @@
 class Blockchain {
   constructor(genesisBlock) {
+    console.log('blockchain constructor');
+    console.log('genesis block')
     if (genesisBlock) {
       this.blocks = [ genesisBlock ];
-      this.mine()
+      this.mine();
     } else {
+      console.log('getting longest blockchain')
       // TODO: ping peers to get longest blockchain
     }
   }
