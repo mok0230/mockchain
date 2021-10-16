@@ -10,13 +10,17 @@ const { hideBin } = require('yargs/helpers');
 const argv = yargs(hideBin(process.argv)).argv;
 
 const port = argv.port;
+const peers = [];
 
 if (!port) {
   throw new Error("port is required")
 }
 
+console.log('Starting server')
+
 if (argv.peers) {
-  console.log('Peers!', argv.peers);
+  argv.peers.forEach(peer => peers.push(peer));
+  console.log('Added peers', peers);
 } else {
   console.log('No peers defined!')
 }
