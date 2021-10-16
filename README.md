@@ -21,19 +21,20 @@ Follow the prompts to choose how many miners to spin up and execute transactions
 
 ### Mining
 
-Miners run on Node.js and are randomly assigned a hashrate. Blocks are mined for every transaction and the difficulty is adjusted every 5 blocks to maintain a block time of 10 seconds (TODO: validate that this is the right block time).
+Miners run on Node.js and are randomly assigned a hashrate. Blocks are mined on average every 10 seconds and the difficulty is adjusted every 10 blocks.
 
 When a block is successfully mined, the miner messages its peers.
 
 Each miner has the following endpoints:
 
 - POST /transactions => accept a new transaction
-- POST /data => accept a new block
+- POST /peers => add a peer
+- POST /data => add a new block
 - GET /data => fetch current state of blockchain
 
 ### Transactions
 
-Transactions are executed via the command-line interface (CLI) using prompts. A new block will be mined after each transaction. After a block is mined, a prompt will appear in the terminal when a new transaction can be executed.
+Transactions are executed via the command-line interface (CLI) using prompts. Every time a new block is mined, the updated balances will appear in the terminal.
 
 ### Blockchain
 
