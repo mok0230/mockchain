@@ -19,11 +19,13 @@ class Blockchain {
   }
 
   setBlocksFromPeers() {
-    getLongestBlockchain().then(longestBlockchain => {
-      console.log('setting blocks')
-      this.blocks = longestBlockchain.blocks
-      this.mine();
-    });
+    executePeerRequest('getData')
+      .then(allBlockchains => getLongestBlockchain(allBlockchains))
+      .then(longestBlockchain => {
+        console.log('setting blocks')
+        this.blocks = longestBlockchain.blocks
+        this.mine();
+      });
   }
 
   // addTransactionToMempool(transaction) {
@@ -63,6 +65,7 @@ class Blockchain {
       console.log('Target difficulty met')
       console.log('candidateBlockHash', candidateBlockHash.toString());
       executePeerRequest('postData', candidateBlock);
+
       sendLog({ type: 'block', data: candidateBlock })
       blocks.push(candidateBlock);
       candidateNonce = 1;

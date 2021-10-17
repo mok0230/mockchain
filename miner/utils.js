@@ -49,9 +49,8 @@ const sendLog = async logData => {
   });
 }
 
-const getLongestBlockchain = async () => {
+const getLongestBlockchain = async (allBlockchains) => {
   console.log('getLongestBlockchain');
-  const allBlockchains = await executePeerRequest('getData');
 
   console.log('allBlockchains', allBlockchains);
 

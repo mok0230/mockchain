@@ -55,7 +55,6 @@ app.post('/data', (req, res) => {
   console.log('req.body', req.body);
   // todo: add block if possible
   res.send(state.blockchain.toJson());
-  // TODO: add new block
 });
 
 app.post('/peers', (req, res) => {
