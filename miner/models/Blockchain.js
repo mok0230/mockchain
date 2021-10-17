@@ -9,7 +9,7 @@ class Blockchain {
     this.mempool = [];
     if (genesisBlock) {
       this.blocks = [ genesisBlock ];
-      console.log('state', state)
+      sendLog(genesisBlock);
       this.mine();
     } else {
       console.log('getting longest blockchain')
