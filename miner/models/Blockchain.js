@@ -9,7 +9,7 @@ class Blockchain {
     this.mempool = [];
     if (genesisBlock) {
       this.blocks = [ genesisBlock ];
-      sendLog(genesisBlock);
+      sendLog({ type: 'block', data: genesisBlock });
       this.mine();
     } else {
       console.log('getting longest blockchain')
@@ -63,7 +63,7 @@ class Blockchain {
       console.log('Target difficulty met')
       console.log('candidateBlockHash', candidateBlockHash.toString());
       executePeerRequest('postData', candidateBlock);
-      sendLog(candidateBlock)
+      sendLog({ type: 'block', data: candidateBlock })
       blocks.push(candidateBlock);
       candidateNonce = 1;
     }

@@ -7,14 +7,22 @@ app.use(express.json());
 
 const port = 3000;
 
-const logHistory = [];
+const hashrates = {};
+const blockHistory = [];
 
 console.log('Starting logger server')
 
 app.post('/logs', (req, res) => {
   console.log('POST /logs');
   console.log('req.body', req.body);
-  logHistory.push(req.body);
+  switch(req.body.type) {
+    case 'block':
+      blockHistory.push(req.body.data);
+      break;
+    case 'hashrate':
+      hashrates[req.body.data.address] = req.body.data.hashrate;
+      break;
+  }
   res.send({ success: true });
 });
 

@@ -17,6 +17,5 @@ window.addEventListener('DOMContentLoaded', () => {
     if (activatedItem != state.activeView) {
       activateView(activatedItem);
     }
-    
   });
 });

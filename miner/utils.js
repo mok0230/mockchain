@@ -45,7 +45,7 @@ const sendLog = async logData => {
   fetch(`${LOGGER_URI}/logs`, { 
     method: 'POST', 
     body: JSON.stringify(logData),
-    headers: {'Content-Type': 'application/json'}
+    headers: { 'Content-Type': 'application/json' }
   });
 }
 
@@ -88,11 +88,16 @@ const blockchainValidityFilter = blockchain => {
 
 const targetDifficulty = BigInt(0x0fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
 
+const getHashrateFromInterval = (hashInterval) => {
+  return (1000 / hashInterval).toFixed(2);
+}
+
 module.exports = {
   genesisBlock,
   getBlockHash,
   executePeerRequest,
   getLongestBlockchain,
   targetDifficulty,
-  sendLog
+  sendLog,
+  getHashrateFromInterval
 }

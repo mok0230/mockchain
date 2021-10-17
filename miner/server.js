@@ -6,7 +6,7 @@ const express = require('express');
 // const SHA256 = require('crypto-js/sha256');
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
-const { genesisBlock } = require('./utils');
+const { genesisBlock, sendLog, getHashrateFromInterval } = require('./utils');
 const { Blockchain } = require('./models/Blockchain');
 const argv = yargs(hideBin(process.argv)).argv;
 // const cors = require('cors');
@@ -33,6 +33,12 @@ setState({
   peers,
   hashInterval: (Math.random() * 400) + 100
 });
+
+sendLog({ type: 'hashrate', data: {
+  address: state.address,
+  hashrate: getHashrateFromInterval(state.hashInterval)
+  }
+})
 
 setState({ blockchain: new Blockchain(isSatoshi ? genesisBlock : null) })
 
