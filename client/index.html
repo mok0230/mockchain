@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Mockchain Viewer</title>
+    <script type="application/javascript" src="index.js"></script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+  </head>
+  <body>
+    <ion-app>
+      <ion-split-pane when="sm" content-id="main-content">
+        <ion-menu content-id="main-content">
+          <ion-header>
+            <ion-toolbar color="primary">
+              <ion-title>Menu</ion-title>
+            </ion-toolbar>
+          </ion-header>
+
+          <ion-content>
+            <ion-list id="side-nav">
+              <ion-menu-toggle auto-hide="false">
+                <ion-item button name="explorer" color="dark">
+                  <ion-icon slot="start" name="link"></ion-icon>
+                  <ion-label>Block Explorer</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+              <ion-menu-toggle auto-hide="false">
+                <ion-item button name="balances">
+                  <ion-icon slot="start" name="cash"></ion-icon>
+                  <ion-label>Wallet Balances</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+              <ion-menu-toggle auto-hide="false">
+                <ion-item button name="hashrates">
+                  <ion-icon slot="start" name="speedometer"></ion-icon>
+                  <ion-label>Hashrates</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            </ion-list>
+          </ion-content>
+        </ion-menu>
+
+        <div class="ion-page" id="main-content">
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-menu-toggle>
+                  <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                  </ion-button>
+                </ion-menu-toggle>
+              </ion-buttons>
+              <ion-title>Mockchain Viewer</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content id="explorer" class="ion-padding">
+            <h1>Block Explorer</h1>
+          </ion-content>
+          <ion-content id="balances" class="ion-padding ion-hide">
+            <h1>Balances</h1>
+          </ion-content>
+          <ion-content id="hashrates" class="ion-padding ion-hide">
+            <h1>Hashrates</h1>
+          </ion-content>
+        </div>
+      </ion-split-pane>
+    </ion-app>
+  </body>
+</html>
