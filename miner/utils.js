@@ -94,7 +94,7 @@ const isValidBlockchain = blockchain => {
   return true;
 }
 
-const targetDifficulty = BigInt(0x0fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+const targetDifficulty = BigInt(0x00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
 
 const getHashrateFromInterval = (hashInterval) => {
   return (1000 / hashInterval).toFixed(2);

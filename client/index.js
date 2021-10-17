@@ -16,6 +16,8 @@ window.addEventListener('DOMContentLoaded', () => {
         console.log('message received');
         console.log('evt', evt);
         console.log('evt.data', evt.data);
+        window.blockchain = JSON.parse(evt.data).data;
+        refreshExplorerTable();
       };
     } else {
       alert('WebSockets are not supported in this browser');
@@ -38,11 +40,25 @@ window.addEventListener('DOMContentLoaded', () => {
         data: window.miners, //assign data to table
         layout:"fitColumns", //fit columns to width of table (optional)
         columns:[ //Define Table Columns
-          {title:"Miner", field:"address", width:150},
-          {title:"Hashes/sec", field:"hashrate", hozAlign:"left"},
+          {title:"Miner", field:"address"},
+          {title:"Hashes/sec", field:"hashrate"},
         ]
      });
   }
+
+  function refreshExplorerTable() {
+    new Tabulator("#explorer-table", {
+      data: window.blockchain, //assign data to table
+      layout:"fitColumns", //fit columns to width of table (optional)
+      columns:[ //Define Table Columns
+        {title:"Block Height", field:"height"},
+        {title:"Previous Hash", field:"previousHash"},
+        {title:"Nonce", field:"nonce"},
+        {title:"Miner", field:"transactions.0.recipient"},
+        {title:"Amount", field:"transactions.0.amount"},
+      ]
+   });
+}
 
   function activateView(activatedView) {
     document.querySelector(`#${state.activeView}`).classList.add('ion-hide');
