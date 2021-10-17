@@ -35,39 +35,38 @@ class Blockchain {
 
     const { blocks } = this;
 
-    let isSufficientlyDifficult = false;
     let candidateNonce = 1;
-    
-    while (!isSufficientlyDifficult) {
-        const candidateBlock = {
-            height: blocks.length,
-            previousHash: getBlockHash(blocks[blocks.length - 1]),
-            transactions: [
-              {
-                sender: 'coinbase',
-                recipient: state.address,
-                amount: 50
-              }
-            ],
-            nonce: candidateNonce
-        };
 
-        console.log('candidateBlock', candidateBlock);
+    setInterval(() => {
+      const candidateBlock = {
+        height: blocks.length,
+        previousHash: getBlockHash(blocks[blocks.length - 1]),
+        transactions: [
+          {
+            sender: 'coinbase',
+            recipient: state.address,
+            amount: 50
+          }
+        ],
+        nonce: candidateNonce
+    };
 
-        const candidateBlockStringified = JSON.stringify(candidateBlock);
+    console.log('candidateBlock', candidateBlock);
 
-        const candidateBlockHash = SHA256(candidateBlockStringified);
+    const candidateBlockStringified = JSON.stringify(candidateBlock);
 
-        if (BigInt(`0x${candidateBlockHash}`) < targetDifficulty) {
-          console.log('Target difficulty met')
-          console.log('candidateBlockHash', candidateBlockHash.toString());
-          isSufficientlyDifficult = true;
-          executePeerRequest('postData', candidateBlock);
-          blocks.push(candidateBlock);
-        }
+    const candidateBlockHash = SHA256(candidateBlockStringified);
 
-        candidateNonce++;
+    candidateNonce++;
+
+    if (BigInt(`0x${candidateBlockHash}`) < targetDifficulty) {
+      console.log('Target difficulty met')
+      console.log('candidateBlockHash', candidateBlockHash.toString());
+      executePeerRequest('postData', candidateBlock);
+      blocks.push(candidateBlock);
+      candidateNonce = 1;
     }
+    }, state.hashInterval)
   }
 
   toJson() {

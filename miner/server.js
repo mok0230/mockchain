@@ -30,7 +30,8 @@ const peers = argv.peers ? Array.isArray(argv.peers) ? argv.peers : [argv.peers]
 setState({
   isSatoshi,
   address: isSatoshi ? 'satoshi' : port.toString(),
-  peers
+  peers,
+  hashInterval: (Math.random() * 400) + 100
 });
 
 setState({ blockchain: new Blockchain(isSatoshi ? genesisBlock : null) })
