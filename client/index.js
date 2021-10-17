@@ -18,6 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
         console.log('evt.data', evt.data);
         window.blockchain = JSON.parse(evt.data).data;
         refreshExplorerTable();
+        updateAccountBalances();
       };
     } else {
       alert('WebSockets are not supported in this browser');
@@ -42,11 +43,34 @@ window.addEventListener('DOMContentLoaded', () => {
         columns:[ //Define Table Columns
           {title:"Miner", field:"address"},
           {title:"Hashes/sec", field:"hashrate"},
+          {title:"Balance", field:"balance"},
         ]
      });
   }
 
+  function zeroMinerBalances() {
+    window.miners.forEach(miner => {
+      miner.balance = 0;
+    })
+  }
+
+  function updateAccountBalances() {
+    zeroMinerBalances();
+    window.blockchain.forEach(block => {
+      const coinbaseTransaction = block.transactions[0];
+      console.log('coinbaseTransaction', coinbaseTransaction);
+      const minerIndex = window.miners.findIndex(miner => miner.address === coinbaseTransaction.recipient);
+      console.log('minerIndex', minerIndex);
+      const existingBalance = window.miners[minerIndex].balance;
+      console.log('existingBalance', existingBalance);
+      window.miners[minerIndex].balance = existingBalance ? existingBalance + coinbaseTransaction.amount : coinbaseTransaction.amount;
+      console.log('window.miners[minerIndex]', window.miners[minerIndex])
+    })
+    refreshMinersTable();
+  }
+
   function refreshExplorerTable() {
+    //TODO: refresh (or even append!) data instead of creating a new a new table each time
     new Tabulator("#explorer-table", {
       data: window.blockchain, //assign data to table
       layout:"fitColumns", //fit columns to width of table (optional)
@@ -58,7 +82,7 @@ window.addEventListener('DOMContentLoaded', () => {
         {title:"Amount", field:"transactions.0.amount"},
       ]
    });
-}
+  }
 
   function activateView(activatedView) {
     document.querySelector(`#${state.activeView}`).classList.add('ion-hide');
