@@ -39,3 +39,9 @@ Transactions are executed via the command-line interface (CLI) using prompts. Ev
 ### State
 
 Each miner maintains the state of the blockchain in its local state. It will also be displayed on the browser-based user interface.
+
+## Future Enhancements
+
+- Adjust difficulty every 10 seconds (or different amount of time if it makes sense)
+- Add ability to execute a transaction in the UI
+- Fix numerous inefficiencies on UI (particularly blockchain/balance updating)
