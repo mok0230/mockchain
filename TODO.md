@@ -1,6 +1,5 @@
 # TODO
 
-- Force miners to accept a different miner's blockchain if it is longest
 - Open websocket from logger to UI
 - Create hashrates table on UI
 - Create block explorer table on UI

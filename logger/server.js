@@ -10,6 +10,20 @@ const port = 3000;
 const hashrates = {};
 const blockHistory = [];
 
+const { WebSocketServer } = require('ws');
+
+console.log('Starting WebSocket server on port 8080');
+
+const wss = new WebSocketServer({ port: 8080 });
+
+wss.on('connection', function connection(ws) {
+  ws.on('message', function incoming(message) {
+    console.log('received: %s', message);
+  });
+
+  ws.send('something');
+});
+
 console.log('Starting logger server')
 
 app.post('/logs', (req, res) => {
