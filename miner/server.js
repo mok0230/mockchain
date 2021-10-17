@@ -6,7 +6,7 @@ const express = require('express');
 // const SHA256 = require('crypto-js/sha256');
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
-const { genesisBlock, sendLog, getHashrateFromInterval } = require('./utils');
+const { genesisBlock, sendLog, getHashrateFromInterval, executePeerRequest, isValidBlockchain } = require('./utils');
 const { Blockchain } = require('./models/Blockchain');
 const argv = yargs(hideBin(process.argv)).argv;
 // const cors = require('cors');
@@ -31,8 +31,12 @@ setState({
   isSatoshi,
   address: isSatoshi ? 'satoshi' : port.toString(),
   peers,
-  hashInterval: (Math.random() * 400) + 100
+  hashInterval: (Math.random() * 400) + 100,
+  showFullMiningDebugLogs: true
 });
+
+// notify peers to add me as peer
+if (peers.length) executePeerRequest('postPeer', { address: state.address });
 
 sendLog({ type: 'hashrate', data: {
   address: state.address,
@@ -53,12 +57,27 @@ app.get('/data', (req, res) => {
 app.post('/data', (req, res) => {
   console.log('POST /data');
   console.log('req.body', req.body);
-  // todo: add block if possible
+  
+  if (req.body.blocks.length > state.blockchain.blocks.length && isValidBlockchain(req.body)) {
+    console.log('Updating local blockchain');
+    state.blockchain.blocks = req.body.blocks;
+    console.log('new local blocks', state.blockchain.blocks)
+  }
+
   res.send(state.blockchain.toJson());
 });
 
 app.post('/peers', (req, res) => {
-  // TODO: add new peer
+  console.log('POST /peers');
+  const response = { added: false };
+
+  if (state.peers.indexOf(req.body.address) === -1) {
+    console.log('adding peer', req.body.address);
+    state.peers.push(req.body.address);
+    response.added = true;
+  }
+
+  res.send(response);
 });
 
 app.post('/transactions', (req, res) => {

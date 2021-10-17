@@ -9,7 +9,7 @@ class Blockchain {
     this.mempool = [];
     if (genesisBlock) {
       this.blocks = [ genesisBlock ];
-      sendLog({ type: 'block', data: genesisBlock });
+      sendLog({ sender: state.address, type: 'block', data: genesisBlock });
       this.mine();
     } else {
       console.log('getting longest blockchain')
@@ -35,14 +35,12 @@ class Blockchain {
   mine() {
     console.log('Mining!')
 
-    const { blocks } = this;
-
     let candidateNonce = 1;
 
     setInterval(() => {
       const candidateBlock = {
-        height: blocks.length,
-        previousHash: getBlockHash(blocks[blocks.length - 1]),
+        height: this.blocks.length,
+        previousHash: getBlockHash(this.blocks[this.blocks.length - 1]),
         transactions: [
           {
             sender: 'coinbase',
@@ -53,7 +51,9 @@ class Blockchain {
         nonce: candidateNonce
     };
 
-    console.log('candidateBlock', candidateBlock);
+    if (state.showFullMiningDebugLogs) {
+      console.log('candidateBlock', candidateBlock);  
+    }
 
     const candidateBlockStringified = JSON.stringify(candidateBlock);
 
@@ -64,10 +64,12 @@ class Blockchain {
     if (BigInt(`0x${candidateBlockHash}`) < targetDifficulty) {
       console.log('Target difficulty met')
       console.log('candidateBlockHash', candidateBlockHash.toString());
-      executePeerRequest('postData', candidateBlock);
+      this.blocks.push(candidateBlock);
 
-      sendLog({ type: 'block', data: candidateBlock })
-      blocks.push(candidateBlock);
+      executePeerRequest('postData', { blocks: this.blocks });
+
+      sendLog({ sender: state.address, type: 'block', data: candidateBlock })
+      
       candidateNonce = 1;
     }
     }, state.hashInterval)

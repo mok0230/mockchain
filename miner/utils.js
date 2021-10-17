@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 
 const LOGGER_URI = 'http://localhost:3000';
 
-const getPeerUri = peerPort => `http://localhost:${peerPort}/data`
+const getPeerUri = (port, path) => `http://localhost:${port}/${path}`
 
 const genesisBlock = {
   height: 0,  
@@ -30,10 +30,20 @@ const executePeerRequest = async (type, data) => {
   let requests;
 
   switch(type) {
+    case 'postPeer':
+      requests = state.peers.map(peer => fetch(getPeerUri(peer, 'peers'), 
+      {method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' }})
+      .then(response => response.json()));
+      break;
     case 'getData':
-      requests = state.peers.map(peer => fetch(getPeerUri(peer)).then(response => response.json()));
+      requests = state.peers.map(peer => fetch(getPeerUri(peer, 'data')).then(response => response.json()));
+      break;
     case 'postData':
-      requests = state.peers.map(peer => fetch(getPeerUri(peer), {method: 'POST', body: data}).then(response => response.json()));
+      console.log('data', data);
+      requests = state.peers.map(peer => fetch(getPeerUri(peer, 'data'), 
+      {method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' }})
+      .then(response => response.json()));
+      break;
   }
 
   return await Promise.all(requests);
@@ -59,7 +69,7 @@ const getLongestBlockchain = async (allBlockchains) => {
   console.log(allBlockchains[0].blocks[1]);
 
 
-  const validBlockchains = allBlockchains.filter(blockchainValidityFilter);
+  const validBlockchains = allBlockchains.filter(isValidBlockchain);
 
   console.log('validBlockchains', validBlockchains);
 
@@ -76,8 +86,7 @@ const getLongestBlockchain = async (allBlockchains) => {
   return longestBlockchain;
 }
 
-const blockchainValidityFilter = blockchain => {
-  // TODO: expand validation filter to include required properties and difficulty
+const isValidBlockchain = blockchain => {
   for (let i = 1; i < blockchain.blocks.length; i++ ) {
     if (blockchain.blocks[i].previousHash !== getBlockHash(blockchain.blocks[i - 1])) return false;
   }
@@ -98,5 +107,6 @@ module.exports = {
   getLongestBlockchain,
   targetDifficulty,
   sendLog,
-  getHashrateFromInterval
+  getHashrateFromInterval,
+  isValidBlockchain
 }
