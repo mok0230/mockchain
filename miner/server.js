@@ -32,7 +32,7 @@ setState({
   address: isSatoshi ? 'satoshi' : port.toString(),
   peers,
   hashInterval: (Math.random() * 400) + 100,
-  showFullMiningDebugLogs: true
+  showFullMiningDebugLogs: false
 });
 
 // notify peers to add me as peer
