@@ -2,6 +2,10 @@ const SHA256 = require('crypto-js/sha256');
 const { state } = require('./store');
 const fetch = require('node-fetch');
 
+const LOGGER_URI = 'http://localhost:3000';
+
+const getPeerUri = peerPort => `http://localhost:${peerPort}/data`
+
 const genesisBlock = {
   height: 0,  
   previousHash: 0x0,
@@ -27,12 +31,22 @@ const executePeerRequest = async (type, data) => {
 
   switch(type) {
     case 'getData':
-      requests = state.peers.map(peer => fetch(`http://localhost:${peer}/data`).then(response => response.json()));
+      requests = state.peers.map(peer => fetch(getPeerUri(peer)).then(response => response.json()));
     case 'postData':
-      requests = state.peers.map(peer => fetch(`http://localhost:${peer}/data`, {method: 'POST', body: data}).then(response => response.json()));
+      requests = state.peers.map(peer => fetch(getPeerUri(peer), {method: 'POST', body: data}).then(response => response.json()));
   }
 
   return await Promise.all(requests);
+}
+
+const sendLog = async logData => {
+  console.log('sendLog')
+  console.log('logData', logData)
+  fetch(`${LOGGER_URI}/logs`, { 
+    method: 'POST', 
+    body: JSON.stringify(logData),
+    headers: {'Content-Type': 'application/json'}
+  });
 }
 
 const getLongestBlockchain = async () => {
@@ -79,5 +93,6 @@ module.exports = {
   getBlockHash,
   executePeerRequest,
   getLongestBlockchain,
-  targetDifficulty
+  targetDifficulty,
+  sendLog
 }

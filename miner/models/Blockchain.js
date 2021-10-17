@@ -1,5 +1,5 @@
 const { state } = require('../store');
-const { getLongestBlockchain, targetDifficulty, executePeerRequest, getBlockHash } = require('../utils');
+const { getLongestBlockchain, targetDifficulty, executePeerRequest, getBlockHash, sendLog } = require('../utils');
 const SHA256 = require('crypto-js/sha256');
 
 class Blockchain {
@@ -63,6 +63,7 @@ class Blockchain {
       console.log('Target difficulty met')
       console.log('candidateBlockHash', candidateBlockHash.toString());
       executePeerRequest('postData', candidateBlock);
+      sendLog(candidateBlock)
       blocks.push(candidateBlock);
       candidateNonce = 1;
     }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // sample CLI arguments
-// node miner/server.js --peers 3001 --peers 3002 --port 3000
+// node miner/server.js --port 3001 --peers 3002 --peers 3003 
 
 const express = require('express');
 // const SHA256 = require('crypto-js/sha256');
@@ -22,7 +22,7 @@ if (!port) {
   throw new Error("port is required")
 }
 
-console.log('Starting server')
+console.log('Starting miner server')
 
 const isSatoshi = !Boolean(argv.peers);
 const peers = argv.peers ? Array.isArray(argv.peers) ? argv.peers : [argv.peers] : [];

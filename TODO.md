@@ -1,7 +1,5 @@
 # TODO
 
-- randomize hashrate
-- Create logger Node.js process
 - Build basic UI
 - Get hash rates from logger (?) - endpoint TBD
 - Adjust difficulty every 10 seconds (or different amount of time if it makes sense)
