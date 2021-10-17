@@ -1,8 +1,6 @@
 # TODO
 
-- Other miners add peers using command line argument on instantiation
-- Then ping all peers to get longest blockchain
-- Then start mining
+- randomize hashrate
 - Create logger Node.js process
 - Build basic UI
 - Get hash rates from logger (?) - endpoint TBD

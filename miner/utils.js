@@ -19,15 +19,20 @@ const getBlockHash = block => {
   return SHA256(JSON.stringify(block)).toString();
 }
 
-const executePeerRequest = async (type) => {
-  console.log('executePeerRequest', type);
+const executePeerRequest = async (type, data) => {
   console.log('peers', state.peers);
+  console.log('executePeerRequest', type);
+
+  let requests;
+
   switch(type) {
     case 'getData':
-      console.log('making requests')
-      const requests = state.peers.map(peer => fetch(`http://localhost:${peer}/data`).then(response => response.json()));
-      return await Promise.all(requests);
+      requests = state.peers.map(peer => fetch(`http://localhost:${peer}/data`).then(response => response.json()));
+    case 'postData':
+      requests = state.peers.map(peer => fetch(`http://localhost:${peer}/data`, {method: 'POST', body: data}).then(response => response.json()));
   }
+
+  return await Promise.all(requests);
 }
 
 const getLongestBlockchain = async () => {
@@ -35,6 +40,12 @@ const getLongestBlockchain = async () => {
   const allBlockchains = await executePeerRequest('getData');
 
   console.log('allBlockchains', allBlockchains);
+
+  console.log(allBlockchains[0].blocks[0]);
+
+  console.log(allBlockchains[0].blocks[1]);
+
+
   const validBlockchains = allBlockchains.filter(blockchainValidityFilter);
 
   console.log('validBlockchains', validBlockchains);
@@ -61,9 +72,12 @@ const blockchainValidityFilter = blockchain => {
   return true;
 }
 
+const targetDifficulty = BigInt(0x0fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+
 module.exports = {
   genesisBlock,
   getBlockHash,
   executePeerRequest,
-  getLongestBlockchain
+  getLongestBlockchain,
+  targetDifficulty
 }

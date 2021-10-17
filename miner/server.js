@@ -39,11 +39,15 @@ console.log('state', state);
 
 app.get('/data', (req, res) => {
   console.log('GET /data');
-  console.log('returning', state.blockchain)
-  res.send(state.blockchain);
+  console.log('returning', state.blockchain.toJson())
+  res.send(state.blockchain.toJson());
 });
 
 app.post('/data', (req, res) => {
+  console.log('POST /data');
+  console.log('req.body', req.body);
+  // todo: add block if possible
+  res.send(state.blockchain.toJson());
   // TODO: add new block
 });
 
