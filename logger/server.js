@@ -7,12 +7,14 @@ app.use(express.json());
 
 const port = 3000;
 
+const logHistory = [];
+
 console.log('Starting logger server')
 
 app.post('/logs', (req, res) => {
   console.log('POST /logs');
-  console.log('req', req)
-  console.log('req.body', JSON.stringify(req.body));
+  console.log('req.body', req.body);
+  logHistory.push(req.body);
   res.send({ success: true });
 });
 
