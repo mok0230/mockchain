@@ -1,7 +1,5 @@
 # TODO
 
-- Open websocket from logger to UI
-- Create hashrates table on UI
 - Create block explorer table on UI
 - Create account balances table on UI
 - Adjust difficulty every 10 seconds (or different amount of time if it makes sense)

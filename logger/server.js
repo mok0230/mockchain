@@ -2,7 +2,9 @@
 // sample CLI arguments
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 const appPort = 3000;
@@ -29,9 +31,10 @@ wss.on('connection', function connection(ws) {
 
 console.log('Starting logger server')
 
-app.get('hashrates', (req, res) => {
+app.get('/hashrates', (req, res) => {
   console.log('GET /hashrates');
   res.send({ hashrates });
+  
 })
 
 app.post('/logs', (req, res) => {
