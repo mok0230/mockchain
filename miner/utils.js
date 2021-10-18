@@ -46,7 +46,11 @@ const executePeerRequest = async (type, data) => {
       break;
   }
 
-  return await Promise.all(requests);
+  try {
+    return await Promise.all(requests);
+  } catch (e) {
+    console.log('Failed fetch', e);
+  }
 }
 
 const sendLog = async logData => {
@@ -63,11 +67,6 @@ const getLongestBlockchain = async (allBlockchains) => {
   console.log('getLongestBlockchain');
 
   console.log('allBlockchains', allBlockchains);
-
-  console.log(allBlockchains[0].blocks[0]);
-
-  console.log(allBlockchains[0].blocks[1]);
-
 
   const validBlockchains = allBlockchains.filter(isValidBlockchain);
 
@@ -87,6 +86,8 @@ const getLongestBlockchain = async (allBlockchains) => {
 }
 
 const isValidBlockchain = blockchain => {
+  if (!blockchain || !blockchain.length) return false;
+
   for (let i = 1; i < blockchain.blocks.length; i++ ) {
     if (blockchain.blocks[i].previousHash !== getBlockHash(blockchain.blocks[i - 1])) return false;
   }
@@ -94,7 +95,7 @@ const isValidBlockchain = blockchain => {
   return true;
 }
 
-const targetDifficulty = BigInt(0x0fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+const targetDifficulty = BigInt(0x08ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
 
 const getHashrateFromInterval = (hashInterval) => {
   return (1000 / hashInterval).toFixed(2);
