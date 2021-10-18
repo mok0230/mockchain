@@ -25,7 +25,11 @@ if (!port) {
 console.log('Starting miner server')
 
 const isSatoshi = !Boolean(argv.peers);
-const peers = argv.peers ? Array.isArray(argv.peers) ? argv.peers : [argv.peers] : [];
+let peers = [];
+if (argv.peers) {
+  console.log('argv.peers', argv.peers)
+  peers = Array.isArray(argv.peers) ? argv.peers : [argv.peers];
+}
 
 setState({
   isSatoshi,
