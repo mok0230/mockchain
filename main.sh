@@ -48,11 +48,11 @@ for i in $(seq "$num_miners")
       peers_args+=" --peers $peer"
     done
     echo "zzz"
-    sleep "$i" ; node miner/server.js --port "$port" $peers_args &
+    node miner/server.js --port "$port" $peers_args &
     peers+=("$port")
   fi
 done
 
-sleep 11 ; open client/index.html
+sleep 3 ; open client/index.html
 
 wait
