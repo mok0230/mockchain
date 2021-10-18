@@ -62,10 +62,10 @@ app.post('/data', (req, res) => {
   console.log('POST /data');
   console.log('req.body', req.body);
   
-  if (req.body.blocks.length > state.blockchain.blocks.length && isValidBlockchain(req.body)) {
+  if (state.blockchain && state.blockchain.blocks && (!state.blockchain.blocks.length || req.body.blocks.length > state.blockchain.blocks.length)) {
     console.log('Updating local blockchain');
     state.blockchain.blocks = req.body.blocks;
-    console.log('new local blocks', state.blockchain.blocks)
+    if(!state.blockchain.isMining) state.blockchain.mine()
   }
 
   res.send(state.blockchain.toJson());

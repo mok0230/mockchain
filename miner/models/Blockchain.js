@@ -7,6 +7,8 @@ class Blockchain {
     console.log('blockchain constructor');
     console.log('genesis block')
     this.mempool = [];
+    this.isMining = false;
+    this.blocks =[];
     if (genesisBlock) {
       this.blocks = [ genesisBlock ];
       sendLog({ sender: state.address, type: 'blockchain', data: [genesisBlock] });
@@ -22,9 +24,11 @@ class Blockchain {
     executePeerRequest('getData')
       .then(allBlockchains => getLongestBlockchain(allBlockchains))
       .then(longestBlockchain => {
-        console.log('setting blocks')
-        this.blocks = longestBlockchain.blocks
-        this.mine();
+        if(longestBlockchain) {
+          console.log('setting blocks')
+          this.blocks = longestBlockchain.blocks
+          this.mine();
+        }
       });
   }
 
@@ -33,7 +37,8 @@ class Blockchain {
   // }
 
   mine() {
-    console.log('Mining!')
+    console.log('Mining!');
+    this.isMining = true;
 
     let candidateNonce = 1;
 
